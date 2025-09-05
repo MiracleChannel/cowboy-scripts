@@ -1,0 +1,67 @@
+{
+  "widgets": [
+	{
+	  "type": "metric",
+	  "x": 0,
+	  "y": 0,
+	  "width": 12,
+	  "height": 6,
+	  "properties": {
+		"metrics": [
+		  [
+			"AWS/S3",
+			"BucketSizeBytes",
+			"BucketName",
+			"svodvideos",
+			"StorageType",
+			"StandardStorage"
+		  ]
+		],
+		"view": "timeSeries",
+		"stacked": false,
+		"region": "us-west-2",
+		"title": "Bucket Size Over Time",
+		"period": 86400,
+		"stat": "Average"
+	  }
+	},
+	{
+	  "type": "metric",
+	  "x": 12,
+	  "y": 0,
+	  "width": 12,
+	  "height": 6,
+	  "properties": {
+		"metrics": [
+		  [
+			"AWS/S3",
+			"NumberOfObjects",
+			"BucketName",
+			"svodvideos",
+			"StorageType",
+			"AllStorageTypes"
+		  ]
+		],
+		"view": "timeSeries",
+		"stacked": false,
+		"region": "us-west-2",
+		"title": "Object Count Over Time",
+		"period": 86400,
+		"stat": "Average"
+	  }
+	},
+	{
+	  "type": "log",
+	  "x": 0,
+	  "y": 6,
+	  "width": 24,
+	  "height": 6,
+	  "properties": {
+		"query": "SOURCE '/aws/cloudtrail/insights' | fields @timestamp, eventName, sourceIPAddress, userIdentity.type, resources\n| filter eventName = \"DeleteObject\"\n| filter resources like /svodvideos/\n| sort @timestamp desc\n| limit 100",
+		"region": "us-west-2",
+		"title": "Recent S3 Delete Operations",
+		"view": "table"
+	  }
+	}
+  ]
+}

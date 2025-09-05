@@ -1,0 +1,86 @@
+{
+  "restrictTaggingPolicy": {
+	"Version": "2012-10-17",
+	"Statement": [
+	  {
+		"Sid": "AllowGeneralS3Access",
+		"Effect": "Allow",
+		"Action": [
+		  "s3:GetObject",
+		  "s3:PutObject",
+		  "s3:ListBucket",
+		  "s3:GetObjectTagging"
+		],
+		"Resource": [
+		  "arn:aws:s3:::svodvideos/*",
+		  "arn:aws:s3:::svodvideos"
+		]
+	  },
+	  {
+		"Sid": "DenyDeletionTagForRegularUsers",
+		"Effect": "Deny",
+		"Action": [
+		  "s3:PutObjectTagging"
+		],
+		"Resource": "arn:aws:s3:::svodvideos/*",
+		"Condition": {
+		  "ForAnyValue:StringEquals": {
+			"s3:RequestObjectTagKeys": [
+			  "PERMANENT_DELETE"
+			]
+		  }
+		}
+	  }
+	]
+  },
+  "allowDeletionTagPolicy": {
+	"Version": "2012-10-17",
+	"Statement": [
+	  {
+		"Sid": "AllowFullS3Access",
+		"Effect": "Allow",
+		"Action": "s3:*",
+		"Resource": [
+		  "arn:aws:s3:::svodvideos/*",
+		  "arn:aws:s3:::svodvideos"
+		]
+	  },
+	  {
+		"Sid": "AllowLifecyclePolicyManagement",
+		"Effect": "Allow",
+		"Action": [
+		  "s3:PutLifecycleConfiguration",
+		  "s3:GetLifecycleConfiguration"
+		],
+		"Resource": "arn:aws:s3:::svodvideos"
+	  }
+	]
+  },
+  "monitoringPolicy": {
+	"Version": "2012-10-17",
+	"Statement": [
+	  {
+		"Sid": "AllowCloudTrailAccess",
+		"Effect": "Allow",
+		"Action": [
+		  "cloudtrail:LookupEvents",
+		  "logs:CreateLogStream",
+		  "logs:PutLogEvents",
+		  "logs:DescribeLogGroups",
+		  "logs:DescribeLogStreams"
+		],
+		"Resource": "*"
+	  },
+	  {
+		"Sid": "AllowCloudWatchAccess",
+		"Effect": "Allow",
+		"Action": [
+		  "cloudwatch:PutMetricData",
+		  "cloudwatch:GetMetricStatistics",
+		  "cloudwatch:ListMetrics"
+		],
+		"Resource": "*"
+	  }
+	]
+  }
+}
